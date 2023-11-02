@@ -4,14 +4,12 @@ import { validateForm } from "./../utils/validate";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
   updateProfile,
 } from "firebase/auth";
 import { auth } from "./../utils/firebase";
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { addUser, removeUser } from "./../utils/userSlice";
-import { useNavigate } from "react-router-dom";
+import { addUser } from "./../utils/userSlice";
+import { AVATAR_IMG, BG_IMG } from "./../utils/conatants";
 
 const Login = () => {
   const [userType, setUserType] = useState("Old");
@@ -21,29 +19,6 @@ const Login = () => {
   const [errMessage, setErrMessage] = useState(null);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        const { uid, displayName, email, photoURL } = user;
-        dispatch(
-          addUser({
-            uid: uid,
-            displayName: displayName,
-            email: email,
-            photoURL: photoURL,
-          })
-        );
-        navigate("/browse");
-      } else {
-        // User is signed out
-        dispatch(removeUser());
-        navigate("/");
-      }
-    });
-  }, []);
 
   const formHandler = () => {
     const message = validateForm(
@@ -67,8 +42,7 @@ const Login = () => {
             console.log(user);
             updateProfile(user, {
               displayName: full_name?.current?.value,
-              photoURL:
-                "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABXeeIVtmgzU089rwEnRNnxk6Q1GHEkPghoK2PHnziJv4WrrO_QxZ4crVPJIe3wjusYZjCmN1sxolKdCbQ1jli_HtH2hAzsU.png?r=fcd",
+              photoURL: AVATAR_IMG,
             })
               .then(() => {
                 // Profile updated!
@@ -116,11 +90,7 @@ const Login = () => {
   return (
     <div className="relative">
       <Header />
-      <img
-        src="https://assets.nflxext.com/ffe/siteui/vlv3/dace47b4-a5cb-4368-80fe-c26f3e77d540/f5b52435-458f-498f-9d1d-ccd4f1af9913/IN-en-20231023-popsignuptwoweeks-perspective_alpha_website_large.jpg"
-        className="h-full min-h-screen"
-        alt="background-img"
-      />
+      <img src={BG_IMG} className="h-full min-h-screen" alt="background-img" />
       <div className="absolute top-0 left-0 bg-black opacity-60 w-full h-full"></div>
       <div
         className="absolute top-0 w-full
