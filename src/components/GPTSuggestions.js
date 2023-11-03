@@ -1,7 +1,33 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import MoviesList from "./MoviesList";
 
 const GPTSuggestions = () => {
-  return <div>GPTSuggestions</div>;
+  const { searchMovieTitles, searchMovieResults, loadingState } = useSelector(
+    (store) => store.gptSearch
+  );
+
+  if (loadingState)
+    return (
+      <div className="relative z-40 flex justify-center items-center">
+        <div className="text-2xl text-red-500 font-bold -mt-56">Loading...</div>
+      </div>
+    );
+
+  return (
+    searchMovieTitles &&
+    searchMovieResults && (
+      <div className="relative z-40 pl-10 -mt-56">
+        {searchMovieTitles.map((movie, index) => (
+          <MoviesList
+            key={movie}
+            title={movie}
+            moviesData={searchMovieResults[index]}
+          />
+        ))}
+      </div>
+    )
+  );
 };
 
 export default GPTSuggestions;

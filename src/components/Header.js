@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { addUser, removeUser } from "./../utils/userSlice";
 import { NETFLIX_LOGO } from "./../utils/conatants";
-import { toggleGPT } from "../utils/gptslice";
+import { resetSearchData, toggleGPT } from "../utils/gptslice";
 import { changeLanguage } from "../utils/appConfigSlice";
 import { appLanguages } from "../utils/langConstants";
 
@@ -56,6 +56,7 @@ const Header = () => {
 
   const gptButtonHandler = () => {
     dispatch(toggleGPT());
+    dispatch(resetSearchData());
   };
 
   const langSelectHandler = (e) => {

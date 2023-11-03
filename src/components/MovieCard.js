@@ -4,8 +4,8 @@ const MovieCard = ({ posterId }) => {
   return (
     <div className="pr-3">
       <img
-        src={"https://image.tmdb.org/t/p/w500" + posterId}
-        className="min-w-[200px] cursor-pointer"
+        src={"https://image.tmdb.org/t/p/w185" + posterId}
+        className="min-w-[185px] cursor-pointer"
       />
     </div>
   );
