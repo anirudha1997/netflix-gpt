@@ -85,17 +85,23 @@ const Login = () => {
     }
   };
 
+  const conatinerBgImg = {
+    backgroundImage: "url( '" + BG_IMG + "')",
+  };
+
   return (
-    <div className="relative">
+    <div
+      className="relative bg-cover bg-center min-h-screen"
+      style={conatinerBgImg}
+    >
       <Header />
-      <img src={BG_IMG} className="h-full min-h-screen" alt="background-img" />
       <div className="absolute top-0 left-0 bg-black opacity-60 w-full h-full"></div>
       <div
         className="absolute top-0 w-full
       flex justify-center items-center z-10 h-full"
       >
         <form
-          className=" bg-black/80 p-8 flex flex-col w-4/12"
+          className=" bg-black/80 p-8 flex flex-col w-10/12 xl:w-4/12"
           onSubmit={(e) => e.preventDefault()}
         >
           <p className="text-3xl font-bold text-white my-4">

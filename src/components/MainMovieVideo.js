@@ -12,7 +12,7 @@ const MainMovieVideo = ({ movieId }) => {
   const video_key = trailers[0].key;
 
   return (
-    <div className="absolute top-0 -z-10">
+    <div className="absolute top-44 xl:top-0 z-0 pointer-events-none">
       <iframe
         className="w-screen aspect-video"
         src={

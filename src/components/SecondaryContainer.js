@@ -13,7 +13,7 @@ const SecondaryContainer = () => {
 
   return (
     <div className="bg-black relative pb-[70%]">
-      <div className="pl-10 absolute -top-40 w-screen">
+      <div className="pl-10 absolute top-2 xl:-top-40 w-screen bg-black xl:bg-transparent">
         <MoviesList title="Now Playing" moviesData={nowPlayingMovies} />
         <MoviesList title="Upcoming" moviesData={upcomingMovies} />
         <MoviesList title="Popular" moviesData={popularMovies} />
