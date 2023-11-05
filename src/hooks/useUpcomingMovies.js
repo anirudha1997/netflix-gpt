@@ -1,13 +1,16 @@
 import { useEffect } from "react";
 import { TMDB_options } from "../utils/conatants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUpcomingMovies } from "../utils/moviesSlice";
 
 const useUpcomingMovies = () => {
   const dispatch = useDispatch();
+  const upcomingMoviesInStore = useSelector(
+    (store) => store.movies.upcomingMovies
+  );
 
   useEffect(() => {
-    upcomingMovies();
+    if (!upcomingMoviesInStore) upcomingMovies();
   }, []);
 
   const upcomingMovies = async () => {
