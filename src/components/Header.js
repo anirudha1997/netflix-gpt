@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
-import { auth } from "../utils/firebase";
-import { signOut } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
-import { addUser, removeUser } from "./../utils/userSlice";
+// import { onAuthStateChanged } from "firebase/auth";
+// import { addUser, removeUser } from "./../utils/userSlice";
 import { NETFLIX_LOGO } from "./../utils/conatants";
 import { resetSearchData, toggleGPT } from "../utils/gptslice";
 import { changeLanguage } from "../utils/appConfigSlice";
@@ -19,40 +17,31 @@ const Header = () => {
     (store) => store.gptSearch.toggleGPTSearch
   );
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        const { uid, displayName, email, photoURL } = user;
-        dispatch(
-          addUser({
-            uid: uid,
-            displayName: displayName,
-            email: email,
-            photoURL: photoURL,
-          })
-        );
-        navigate("/browse");
-      } else {
-        // User is signed out
-        dispatch(removeUser());
-        navigate("/");
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
+    // const unsubscribe = onAuthStateChanged(auth, (user) => {
+    //   if (user) {
+    //     // User is signed in, see docs for a list of available properties
+    //     const { uid, displayName, email, photoURL } = user;
+    //     dispatch(
+    //       addUser({
+    //         uid: uid,
+    //         displayName: displayName,
+    //         email: email,
+    //         photoURL: photoURL,
+    //       })
+    //     );
+    //     navigate("/browse");
+    //   } else {
+    //     // User is signed out
+    //     dispatch(removeUser());
+    //     navigate("/");
+    //   }
+    // });
+    // return () => {
+    //   unsubscribe();
+    // };
   }, []);
 
-  const signOutHandler = () => {
-    signOut(auth)
-      .then(() => {
-        dispatch(removeUser());
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-  };
+  const signOutHandler = () => {};
 
   const gptButtonHandler = () => {
     dispatch(toggleGPT());

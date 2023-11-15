@@ -1,12 +1,6 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { validateForm } from "./../utils/validate";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile,
-} from "firebase/auth";
-import { auth } from "./../utils/firebase";
 import { useDispatch } from "react-redux";
 import { addUser } from "./../utils/userSlice";
 import { AVATAR_IMG, BG_IMG } from "./../utils/conatants";
@@ -31,56 +25,7 @@ const Login = () => {
 
     if (!message) {
       if (userType === "New") {
-        createUserWithEmailAndPassword(
-          auth,
-          email.current.value,
-          password.current.value
-        )
-          .then((userCredential) => {
-            // Signed up
-            const user = userCredential.user;
-            updateProfile(user, {
-              displayName: full_name?.current?.value,
-              photoURL: AVATAR_IMG,
-            })
-              .then(() => {
-                // Profile updated!
-                const { uid, displayName, email, photoURL } = user;
-                dispatch(
-                  addUser({
-                    uid: uid,
-                    displayName: displayName,
-                    email: email,
-                    photoURL: photoURL,
-                  })
-                );
-              })
-              .catch((error) => {
-                // An error occurred
-                setErrMessage(error.code + ":" + error.message);
-              });
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // ..
-            setErrMessage(errorCode + ":" + errorMessage);
-          });
       } else {
-        signInWithEmailAndPassword(
-          auth,
-          email.current.value,
-          password.current.value
-        )
-          .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            setErrMessage(errorCode + ":" + errorMessage);
-          });
       }
     }
   };
