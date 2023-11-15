@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 // import { onAuthStateChanged } from "firebase/auth";
 // import { addUser, removeUser } from "./../utils/userSlice";
 import { NETFLIX_LOGO } from "./../utils/conatants";
@@ -10,7 +10,7 @@ import { appLanguages } from "../utils/langConstants";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const user = useSelector((store) => store.user);
   const gptSearchActive = useSelector(

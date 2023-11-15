@@ -11,7 +11,7 @@ const useUpcomingMovies = () => {
 
   useEffect(() => {
     if (!upcomingMoviesInStore) upcomingMovies();
-  }, []);
+  });
 
   const upcomingMovies = async () => {
     const data = await fetch(

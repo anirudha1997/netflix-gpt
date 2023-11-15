@@ -9,7 +9,7 @@ const useMovieVideos = (movieID) => {
 
   useEffect(() => {
     if (!movieVideosInStore) moviesVideos();
-  }, []);
+  });
 
   const moviesVideos = async () => {
     const data = await fetch(

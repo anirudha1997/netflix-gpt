@@ -6,6 +6,7 @@ const MovieCard = ({ posterId }) => {
       <img
         src={"https://image.tmdb.org/t/p/w185" + posterId}
         className="min-w-[185px] cursor-pointer"
+        alt="movie poster"
       />
     </div>
   );

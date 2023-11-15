@@ -23,6 +23,7 @@ const MainMovieVideo = ({ movieId }) => {
           "&loop=1&controls=0"
         }
         allow="autoplay;"
+        title="Video Player"
       ></iframe>
     </div>
   );

@@ -11,7 +11,7 @@ const usePopularMovies = () => {
 
   useEffect(() => {
     if (!popoularMoviesInStore) popularMovies();
-  }, []);
+  });
 
   const popularMovies = async () => {
     const data = await fetch(

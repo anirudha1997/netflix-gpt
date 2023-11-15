@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { validateForm } from "./../utils/validate";
-import { useDispatch } from "react-redux";
-import { addUser } from "./../utils/userSlice";
-import { AVATAR_IMG, BG_IMG } from "./../utils/conatants";
+//import { useDispatch } from "react-redux";
+//import { addUser } from "./../utils/userSlice";
+import { BG_IMG } from "./../utils/conatants";
 
 const Login = () => {
   const [userType, setUserType] = useState("Old");
@@ -12,7 +12,7 @@ const Login = () => {
   const full_name = useRef(null);
   const [errMessage, setErrMessage] = useState(null);
 
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
 
   const formHandler = () => {
     const message = validateForm(

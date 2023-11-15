@@ -9,7 +9,7 @@ const useNowPlayingMovies = () => {
 
   useEffect(() => {
     if (!moviesInStore) nowPlayingMovies();
-  }, []);
+  });
 
   const nowPlayingMovies = async () => {
     const data = await fetch(
