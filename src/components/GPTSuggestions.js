@@ -10,7 +10,7 @@ const GPTSuggestions = () => {
   if (loadingState)
     return (
       <div className="relative z-40 flex justify-center items-center">
-        <div className="text-2xl text-red-500 font-bold -mt-56">Loading...</div>
+        <div className="text-2xl text-red-500 font-bold -mt-72">Loading...</div>
       </div>
     );
 
@@ -21,7 +21,7 @@ const GPTSuggestions = () => {
         {searchMovieTitles.map((movie, index) => (
           <MoviesList
             key={movie}
-            title={movie}
+            title={"Movies related to the title '" + movie + " '"}
             moviesData={searchMovieResults[index]}
           />
         ))}

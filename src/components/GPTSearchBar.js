@@ -51,7 +51,7 @@ const GPTSearchBar = () => {
   };
 
   return (
-    <div className="relative flex justify-center z-20 py-[50%] xl:py-[25%] ">
+    <div className="relative flex items-center z-20 pt-[50%] xl:pt-[15%] xl:pb-[25%] flex-col ">
       <form
         className="bg-none xl:bg-black py-10 rounded-md flex justify-center items-center h-max flex-col w-10/12 xl:flex-row xl:w-8/12"
         onSubmit={(e) => e.preventDefault()}
@@ -69,6 +69,9 @@ const GPTSearchBar = () => {
           {gptSearchConstants?.[appLanguage].buttonText}
         </button>
       </form>
+      <p className="text-xl text-red-700">
+        Example: top hindi comedy movies, best movies which have suspense ...
+      </p>
     </div>
   );
 };
