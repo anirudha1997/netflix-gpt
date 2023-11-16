@@ -22,7 +22,6 @@ const Header = () => {
   useEffect(() => {
     if (currentUser) {
       // User is logged in
-      console.log(currentUser);
       const { full_name, avatar_url } = currentUser.user_metadata;
       dispatch(
         addUser({
@@ -33,7 +32,6 @@ const Header = () => {
       navigate("/browse");
     } else {
       // User is signed out
-      console.log("User is signed out");
       dispatch(removeUser());
       navigate("/");
     }
@@ -41,12 +39,11 @@ const Header = () => {
 
   const signOutHandler = async () => {
     try {
-      const response = await currentUser.logout();
-      console.log("User logged out", response);
+      await currentUser.logout();
       dispatch(removeUser());
       navigate("/");
     } catch (error) {
-      console.log("Failed to logout user: %o", error);
+      alert("Failed to logout user: %o", error);
     }
   };
 

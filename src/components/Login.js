@@ -10,7 +10,7 @@ const Login = () => {
   const email = useRef(null);
   const password = useRef(null);
   const full_name = useRef(null);
-  const [errMessage, setErrMessage] = useState(null);
+  const [message, setMessage] = useState(null);
   const navigate = useNavigate();
 
   const formHandler = async () => {
@@ -20,37 +20,29 @@ const Login = () => {
       full_name?.current?.value
     );
 
-    setErrMessage(message);
+    setMessage(message);
 
     if (!message) {
       if (userType === "New") {
         try {
-          const response = await auth.signup(
-            email.current.value,
-            password.current.value,
-            {
-              full_name: full_name?.current?.value,
-              avatar_url:
-                "https://avatars.githubusercontent.com/u/103755848?v=4",
-            }
-          );
-          console.log("User signed up:", response);
+          await auth.signup(email.current.value, password.current.value, {
+            full_name: full_name?.current?.value,
+            avatar_url: "https://avatars.githubusercontent.com/u/103755848?v=4",
+          });
+          setMessage({
+            text: "Thank you for signing up! Please proceed to sign in now.",
+            type: "success",
+          });
         } catch (error) {
-          setErrMessage(error.message);
+          setMessage({ text: error.message, type: "error" });
           console.error("Signup failed:", error);
         }
       } else {
         try {
-          const response = await auth.login(
-            email.current.value,
-            password.current.value,
-            true
-          );
-          console.log("User logged in:", response);
+          await auth.login(email.current.value, password.current.value, true);
           navigate("/browse");
         } catch (error) {
-          setErrMessage(error.message);
-          console.error("Login failed:", error);
+          setMessage({ text: error.message, type: "error" });
         }
       }
     }
@@ -102,7 +94,14 @@ const Login = () => {
             placeholder="Password"
             className="text-white my-2 py-4 px-4 rounded-md bg-slate-800 placeholder:text-white"
           ></input>
-          <p className="font-semibold text-red-600 my-2">{errMessage}</p>
+          <p
+            className={
+              "font-semibold my-2 " +
+              (message?.type === "error" ? "text-red-600" : "text-blue-500")
+            }
+          >
+            {message?.text}
+          </p>
           <button
             className="p-4 bg-red-700 rounded-md font-bold text-white my-6 text-xl"
             onClick={formHandler}

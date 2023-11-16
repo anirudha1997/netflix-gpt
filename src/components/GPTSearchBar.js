@@ -22,10 +22,8 @@ const GPTSearchBar = () => {
     });
     const results = data.choices[0].message.content;
     const movieTitles = results.split(",");
-    console.log(movieTitles);
     const promiseArray = movieTitles.map((movie) => searchInTMDB(movie));
     const movieResults = await Promise.all(promiseArray);
-    console.log("Movie Results:", movieResults);
     dispatch(addSearchMovieResults({ movieTitles, movieResults }));
     dispatch(setLoadingState(false));
   };
