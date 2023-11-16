@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-//import { useNavigate } from "react-router-dom";
-// import { onAuthStateChanged } from "firebase/auth";
-// import { addUser, removeUser } from "./../utils/userSlice";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../utils/conatants";
+import { addUser, removeUser } from "./../utils/userSlice";
 import { NETFLIX_LOGO } from "./../utils/conatants";
 import { resetSearchData, toggleGPT } from "../utils/gptslice";
 import { changeLanguage } from "../utils/appConfigSlice";
@@ -10,38 +10,45 @@ import { appLanguages } from "../utils/langConstants";
 
 const Header = () => {
   const dispatch = useDispatch();
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const user = useSelector((store) => store.user);
   const gptSearchActive = useSelector(
     (store) => store.gptSearch.toggleGPTSearch
   );
-  useEffect(() => {
-    // const unsubscribe = onAuthStateChanged(auth, (user) => {
-    //   if (user) {
-    //     // User is signed in, see docs for a list of available properties
-    //     const { uid, displayName, email, photoURL } = user;
-    //     dispatch(
-    //       addUser({
-    //         uid: uid,
-    //         displayName: displayName,
-    //         email: email,
-    //         photoURL: photoURL,
-    //       })
-    //     );
-    //     navigate("/browse");
-    //   } else {
-    //     // User is signed out
-    //     dispatch(removeUser());
-    //     navigate("/");
-    //   }
-    // });
-    // return () => {
-    //   unsubscribe();
-    // };
-  }, []);
 
-  const signOutHandler = () => {};
+  const currentUser = auth.currentUser();
+
+  useEffect(() => {
+    if (currentUser) {
+      // User is logged in
+      console.log(currentUser);
+      const { full_name, avatar_url } = currentUser.user_metadata;
+      dispatch(
+        addUser({
+          displayName: full_name.split(" ")[0],
+          photoURL: avatar_url,
+        })
+      );
+      navigate("/browse");
+    } else {
+      // User is signed out
+      console.log("User is signed out");
+      dispatch(removeUser());
+      navigate("/");
+    }
+  }, [dispatch, navigate, currentUser]);
+
+  const signOutHandler = async () => {
+    try {
+      const response = await currentUser.logout();
+      console.log("User logged out", response);
+      dispatch(removeUser());
+      navigate("/");
+    } catch (error) {
+      console.log("Failed to logout user: %o", error);
+    }
+  };
 
   const gptButtonHandler = () => {
     dispatch(toggleGPT());
@@ -104,7 +111,11 @@ const Header = () => {
             <p className="text-xl font-semibold text-white mx-4 cursor-pointer">
               Hi, {user?.displayName}
             </p>
-            <img src={user.photoURL} alt="profile-icon" />
+            <img
+              src={user.photoURL}
+              alt="profile-icon"
+              className="h-7 rounded-full"
+            />
             <p
               className="text-xl font-semibold text-white mx-4 cursor-pointer"
               onClick={signOutHandler}

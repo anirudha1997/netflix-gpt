@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { validateForm } from "./../utils/validate";
-//import { useDispatch } from "react-redux";
-//import { addUser } from "./../utils/userSlice";
 import { BG_IMG } from "./../utils/conatants";
+import { auth } from "../utils/conatants";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [userType, setUserType] = useState("Old");
@@ -11,10 +11,9 @@ const Login = () => {
   const password = useRef(null);
   const full_name = useRef(null);
   const [errMessage, setErrMessage] = useState(null);
+  const navigate = useNavigate();
 
-  //const dispatch = useDispatch();
-
-  const formHandler = () => {
+  const formHandler = async () => {
     const message = validateForm(
       email.current.value,
       password.current.value,
@@ -25,7 +24,34 @@ const Login = () => {
 
     if (!message) {
       if (userType === "New") {
+        try {
+          const response = await auth.signup(
+            email.current.value,
+            password.current.value,
+            {
+              full_name: full_name?.current?.value,
+              avatar_url:
+                "https://avatars.githubusercontent.com/u/103755848?v=4",
+            }
+          );
+          console.log("User signed up:", response);
+        } catch (error) {
+          setErrMessage(error.message);
+          console.error("Signup failed:", error);
+        }
       } else {
+        try {
+          const response = await auth.login(
+            email.current.value,
+            password.current.value,
+            true
+          );
+          console.log("User logged in:", response);
+          navigate("/browse");
+        } catch (error) {
+          setErrMessage(error.message);
+          console.error("Login failed:", error);
+        }
       }
     }
   };
