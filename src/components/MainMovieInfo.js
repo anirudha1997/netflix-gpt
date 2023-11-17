@@ -7,23 +7,23 @@ import { toggleMuteStatus } from "../utils/appConfigSlice";
 const MainMovieInfo = ({ title, description }) => {
   const dispatch = useDispatch();
   const muteStatus = useSelector((store) => store.appConfig.muteStatus);
-  const handleVisibilityChange = () => {
-    if (document.hidden) {
-      // Tab is not active, mute
-      dispatch(toggleMuteStatus(true));
-    } else {
-      // Tab is active, unmute
-      dispatch(toggleMuteStatus(false));
-    }
-  };
 
   useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // Tab is not active, mute
+        dispatch(toggleMuteStatus(true));
+      } else {
+        // Tab is active, unmute
+        dispatch(toggleMuteStatus(false));
+      }
+    };
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, []);
+  }, [dispatch]);
   return (
     <div className="w-screen bg-gradient-to-r from-black to-black xl:to-transparent aspect-video pt-[60%] md:pt-[50%] md:pb-[5%] xl:pt-[15%] pl-10 z-10 flex justify-between items-center">
       <div className="w-8/12 relative z-20 xl:w-5/12">
