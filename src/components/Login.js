@@ -17,12 +17,10 @@ const Login = () => {
   const formHandler = async () => {
     const message = validateForm(
       email.current.value,
-      password.current.value,
       full_name?.current?.value
     );
 
-    setMessage(message);
-
+    setMessage({ text: message, type: "error" });
     if (!message) {
       if (userType === "New") {
         try {
@@ -36,7 +34,6 @@ const Login = () => {
           });
         } catch (error) {
           setMessage({ text: error.message, type: "error" });
-          console.error("Signup failed:", error);
         }
       } else {
         try {
