@@ -4,6 +4,7 @@ import { validateForm } from "./../utils/validate";
 import { BG_IMG } from "./../utils/conatants";
 import { auth } from "../utils/conatants";
 import { useNavigate } from "react-router-dom";
+import user_icon from "../assets/images/user-icon.png";
 
 const Login = () => {
   const [userType, setUserType] = useState("Old");
@@ -27,7 +28,7 @@ const Login = () => {
         try {
           await auth.signup(email.current.value, password.current.value, {
             full_name: full_name?.current?.value,
-            avatar_url: "https://avatars.githubusercontent.com/u/103755848?v=4",
+            avatar_url: user_icon,
           });
           setMessage({
             text: "Thank you for signing up! Please proceed to sign in now.",

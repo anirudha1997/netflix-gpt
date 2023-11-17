@@ -7,6 +7,7 @@ import { NETFLIX_LOGO } from "./../utils/conatants";
 import { resetSearchData, toggleGPT } from "../utils/gptslice";
 import { changeLanguage } from "../utils/appConfigSlice";
 import { appLanguages } from "../utils/langConstants";
+import useGenres from "../hooks/useGenres";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const Header = () => {
   );
 
   const currentUser = auth.currentUser();
-
+  useGenres();
   useEffect(() => {
     if (currentUser) {
       // User is logged in

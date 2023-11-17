@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from "react";
-import useGenres from "../hooks/useGenres";
 import { useSelector } from "react-redux";
 
 const MovieCard = ({
@@ -12,14 +11,14 @@ const MovieCard = ({
   genre_ids,
   cardIndex,
 }) => {
-  useGenres();
   const genres = useSelector((store) => store.movies.genres);
   const genreNames = useMemo(() => {
     const names = [];
     if (genres) {
       genre_ids.forEach((genre) => {
         genres.forEach((storedGenre) => {
-          if (storedGenre.id === genre) names.push(storedGenre.name);
+          if (storedGenre && storedGenre.id === genre)
+            names.push(storedGenre.name);
         });
       });
     }

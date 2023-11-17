@@ -6,6 +6,7 @@ const MainMovieVideo = ({ movieId }) => {
   useMovieVideos(movieId);
 
   const videos = useSelector((store) => store.movies.mainMovieVideos);
+  const muteStatus = useSelector((store) => store.appConfig.muteStatus);
 
   if (!videos) return;
   const trailers = videos.filter((video) => video.type === "Trailer");
@@ -18,7 +19,9 @@ const MainMovieVideo = ({ movieId }) => {
         src={
           "https://www.youtube.com/embed/" +
           video_key +
-          "/?autoplay=1&mute=1&playlist=" +
+          "/?autoplay=1" +
+          (muteStatus ? "&mute=1" : "&mute=0") +
+          "&playlist=" +
           video_key +
           "&loop=1&controls=0"
         }
