@@ -20,7 +20,7 @@ export const TMDB_options = {
 export const OPENAI_KEY = process.env.REACT_APP_OPENAI_KEY;
 
 export const auth = new GoTrue({
-  APIUrl: "https://netlfix-gpt.netlify.app/.netlify/identity",
+  APIUrl: "https://netflix-with-ai.netlify.app/.netlify/identity",
   audience: "",
   setCookie: true,
 });
