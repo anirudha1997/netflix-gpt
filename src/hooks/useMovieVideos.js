@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { TMDB_options } from "../utils/conatants";
 import { useDispatch, useSelector } from "react-redux";
-import { mainMovieVideo } from "../utils/moviesSlice";
+import { addMovieVideos } from "../utils/moviesSlice";
 
-const useMovieVideos = (movieID) => {
+const useMovieTrailer = (movieID) => {
   const dispatch = useDispatch();
-  const movieVideosInStore = useSelector((store) => store.mainMovieVideos);
+  const movieVideosInStore = useSelector((store) => store.movieTrailer);
 
   useEffect(() => {
     if (!movieVideosInStore) moviesVideos();
@@ -17,8 +17,10 @@ const useMovieVideos = (movieID) => {
       TMDB_options
     );
     const json = await data.json();
-    dispatch(mainMovieVideo(json.results));
+    const trailer = json.results.filter((video) => video.type === "Trailer");
+    console.log("hook executed");
+    dispatch(addMovieVideos(trailer));
   };
 };
 
-export default useMovieVideos;
+export default useMovieTrailer;

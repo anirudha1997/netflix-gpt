@@ -1,16 +1,31 @@
-import React from "react";
-import useMovieVideos from "./../hooks/useMovieVideos";
-import { useSelector } from "react-redux";
+import React, { useCallback, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { TMDB_options } from "../utils/conatants";
+import { updateMainMovieVideo } from "../utils/moviesSlice";
 
 const MainMovieVideo = ({ movieId }) => {
-  useMovieVideos(movieId);
-
-  const videos = useSelector((store) => store.movies.mainMovieVideos);
+  const dispatch = useDispatch();
+  const trailer_video = useSelector((store) => store.movies.mainMovieVideos);
   const muteStatus = useSelector((store) => store.appConfig.muteStatus);
 
-  if (!videos) return;
-  const trailers = videos.filter((video) => video.type === "Trailer");
-  const video_key = trailers[0].key;
+  const fetchMainMovieVideo = useCallback(async () => {
+    const data = await fetch(
+      "https://api.themoviedb.org/3/movie/" + movieId + "/videos",
+      TMDB_options
+    );
+    const json = await data.json();
+    console.log(json);
+    const trailer = json.results.filter((video) => video.type === "Trailer");
+    dispatch(updateMainMovieVideo(trailer));
+  }, [dispatch, movieId]);
+
+  useEffect(() => {
+    fetchMainMovieVideo();
+  }, [fetchMainMovieVideo]);
+
+  if (!trailer_video) return;
+  const video_key = trailer_video[0].key;
+  console.log("Trailer video key:", video_key);
 
   return (
     <div className="absolute top-44 xl:top-0 z-0 pointer-events-none">
