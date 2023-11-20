@@ -9,7 +9,7 @@ import {
   setShowIframe,
 } from "../utils/moviesSlice";
 
-const MoviesList = ({ title, moviesData }) => {
+const MoviesList = ({ title, moviesData, type }) => {
   const [hoveredCard, setHoveredCard] = useState(null);
   const containerRef = useRef(null);
   const dispatch = useDispatch();
@@ -40,17 +40,21 @@ const MoviesList = ({ title, moviesData }) => {
   let timer;
 
   const handleMouseEnter = (index, movieId) => {
-    fetchTrailerVideo(movieId);
-    timer = setTimeout(() => {
-      dispatch(setShowIframe(true));
-    }, 900);
+    if (type !== "suggestions") {
+      fetchTrailerVideo(movieId);
+      timer = setTimeout(() => {
+        dispatch(setShowIframe(true));
+      }, 900);
+    }
     setHoveredCard(index);
   };
 
   const handleMouseLeave = () => {
-    dispatch(setShowIframe(false));
-    clearTimeout(timer);
-    dispatch(clearMovieVideos());
+    if (type !== "suggestions") {
+      dispatch(setShowIframe(false));
+      clearTimeout(timer);
+      dispatch(clearMovieVideos());
+    }
     setHoveredCard(null);
   };
 
@@ -60,12 +64,20 @@ const MoviesList = ({ title, moviesData }) => {
         <h1 className="text-xl md:text-2xl font-semibold text-white mb-3">
           {title}
         </h1>
-        <button className="mx-4 mb-2" onClick={scrollLeft}>
-          <img src={leftArrow} alt="scroll left" className="h-6" />
-        </button>
-        <button className="mb-2" onClick={scrollRight}>
-          <img src={leftArrow} className="rotate-180 h-6" alt="scroll right" />
-        </button>
+        {moviesData.length > 7 && (
+          <>
+            <button className="mx-4 mb-2" onClick={scrollLeft}>
+              <img src={leftArrow} alt="scroll left" className="h-6" />
+            </button>
+            <button className="mb-2" onClick={scrollRight}>
+              <img
+                src={leftArrow}
+                className="rotate-180 h-6"
+                alt="scroll right"
+              />
+            </button>
+          </>
+        )}
       </div>
       <div
         className="flex overflow-x-scroll overflow-y-hidden scroll-smooth"

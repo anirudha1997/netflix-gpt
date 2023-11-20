@@ -23,6 +23,7 @@ const GPTSuggestions = () => {
             key={movie}
             title={"Movies related to the title '" + movie + " '"}
             moviesData={searchMovieResults[index]}
+            type="suggestions"
           />
         ))}
       </div>
