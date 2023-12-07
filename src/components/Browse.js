@@ -7,6 +7,7 @@ import usePopularMovies from "../hooks/usePopularMovies";
 import useUpcomingMovies from "../hooks/useUpcomingMovies";
 import GPTSearch from "./GPTSearch";
 import { useSelector } from "react-redux";
+import "../assets/css/scrollbar.css";
 
 const Browse = () => {
   useNowPlayingMovies();

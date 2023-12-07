@@ -57,9 +57,8 @@ const Header = () => {
     dispatch(changeLanguage(e.target.value));
   };
 
-  const dynamicHeaderClass = `absolute z-30 w-screen flex flex-col xl:flex-row items-center justify-between`;
   return (
-    <div className={dynamicHeaderClass}>
+    <div className="absolute z-30 w-full flex flex-col xl:flex-row items-center justify-between">
       <img
         src={NETFLIX_LOGO}
         alt="netflix-logo"

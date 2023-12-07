@@ -4,6 +4,7 @@ import play_button from "../assets/images/play-button.png";
 
 const MovieCard = ({
   posterId,
+  relatedTitle,
   adult,
   rating,
   onMouseEnter,
@@ -30,7 +31,9 @@ const MovieCard = ({
   }, [genre_ids, genres]);
 
   useEffect(() => {
-    const card = document.getElementById(`movieCard-${posterId}-${cardIndex}`);
+    const card = document.getElementById(
+      `movieCard-${posterId}-${cardIndex}-${relatedTitle}`
+    );
 
     if (card) {
       card.addEventListener("mouseenter", onMouseEnter);
@@ -41,13 +44,13 @@ const MovieCard = ({
         card.removeEventListener("mouseleave", onMouseLeave);
       };
     }
-  }, [posterId, cardIndex, onMouseEnter, onMouseLeave]);
+  }, [posterId, relatedTitle, cardIndex, onMouseEnter, onMouseLeave]);
 
   const trailor_video_key = trailer?.key;
 
   return (
     <div
-      id={`movieCard-${posterId}-${cardIndex}`}
+      id={`movieCard-${posterId}-${cardIndex}-${relatedTitle}`}
       className={
         "min-w-[185px] mr-3 relative hover:scale-x-150 hover:scale-y-125 cursor-pointer " +
         (cardIndex === 0 ? "origin-left" : "")

@@ -28,9 +28,9 @@ const MainMovieVideo = ({ movieId }) => {
   console.log("Trailer video key:", video_key);
 
   return (
-    <div className="absolute top-44 xl:top-0 z-0 pointer-events-none">
+    <div className="absolute top-44 xl:top-0 z-0 pointer-events-none w-full">
       <iframe
-        className="w-screen aspect-video"
+        className="w-full aspect-video"
         src={
           "https://www.youtube.com/embed/" +
           video_key +

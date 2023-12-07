@@ -59,7 +59,7 @@ const MoviesList = ({ title, moviesData, type }) => {
   };
 
   return (
-    <div className="py-6 xl:py-4">
+    <div className="py-6 xl:py-5">
       <div className="flex items-center">
         <h1 className="text-xl md:text-2xl font-semibold text-white mb-3">
           {title}
@@ -86,6 +86,7 @@ const MoviesList = ({ title, moviesData, type }) => {
         {moviesData?.map((movie, index) => (
           <MovieCard
             key={movie.id}
+            relatedTitle={title}
             movieId={movie.id}
             posterId={movie.poster_path}
             adult={movie.adult}

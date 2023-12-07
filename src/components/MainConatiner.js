@@ -10,7 +10,7 @@ const MainConatiner = () => {
 
   if (!nowPlayingMovies) return;
 
-  const bannerMovie = nowPlayingMovies[1];
+  const bannerMovie = nowPlayingMovies[0];
 
   const { original_title, overview, id } = bannerMovie;
 

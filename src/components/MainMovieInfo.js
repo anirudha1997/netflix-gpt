@@ -27,7 +27,7 @@ const MainMovieInfo = ({ title, description }) => {
     };
   }, [dispatch, muteStatus]);
   return (
-    <div className="w-screen bg-gradient-to-r from-black to-black xl:to-transparent aspect-video pt-[60%] md:pt-[50%] md:pb-[5%] xl:pt-[15%] pl-10 z-10 flex justify-between items-center">
+    <div className="w-full aspect-video bg-gradient-to-r from-black to-black xl:to-transparent lg:min-h-[90vh] pt-[60%] pb-[5%] xl:pb-[10%] md:pt-[50%] xl:pt-[10%] pl-10 z-10 flex justify-between items-end">
       <div className="w-8/12 relative z-20 xl:w-5/12">
         <h1 className="text:2xl xl:text-5xl font-bold text-white mb-3">
           {title}
