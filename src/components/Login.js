@@ -106,6 +106,10 @@ const Login = () => {
           >
             {userType === "Old" ? "Sign In" : "Sign Up"}
           </button>
+          <div className="text-white mb-4">
+            <p>Test user email : testUser@test.com</p>
+            <p>Test user password : test123</p>
+          </div>
           <p
             className="text-white text-xl cursor-pointer"
             onClick={() => {

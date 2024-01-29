@@ -21,7 +21,7 @@ const GPTSuggestions = () => {
         {searchMovieTitles.map((movie, index) => (
           <MoviesList
             key={movie}
-            title={"Movies related to the title '" + movie + " '"}
+            title={movie}
             moviesData={searchMovieResults[index]}
             type="suggestions"
           />
