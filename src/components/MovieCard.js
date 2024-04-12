@@ -36,7 +36,7 @@ const MovieCard = ({
       `movieCard-${posterId}-${cardIndex}-${relatedTitle}`
     );
 
-    if (card && cardType.toString() != "suggestions") {
+    if (card && cardType !== "suggestions") {
       card.addEventListener("mouseenter", onMouseEnter);
       card.addEventListener("mouseleave", onMouseLeave);
 
@@ -55,7 +55,7 @@ const MovieCard = ({
       className={
         "min-w-[185px] mr-3 relative cursor-pointer " +
         (cardIndex === 0 ? "origin-left" : "") +
-        (cardType.toString() != "suggestions"
+        (cardType !== "suggestions"
           ? " hover:scale-x-150 hover:scale-y-125"
           : "")
       }
@@ -89,7 +89,7 @@ const MovieCard = ({
               <button
                 className={
                   "ml-2" +
-                  (cardType.toString() != "suggestions"
+                  (cardType !== "suggestions"
                     ? " scale-x-[0.67] scale-y-[0.8]"
                     : "")
                 }
@@ -99,7 +99,7 @@ const MovieCard = ({
               <p
                 className={
                   "mr-4 border border-gray-500 p-1 text-gray-500 font-semibold w-fit" +
-                  (cardType.toString() != "suggestions"
+                  (cardType !== "suggestions"
                     ? " scale-x-[0.67] scale-y-[0.8]"
                     : "")
                 }
@@ -110,7 +110,7 @@ const MovieCard = ({
             <p
               className={
                 "-ml-5 pb-0" +
-                (cardType.toString() != "suggestions"
+                (cardType !== "suggestions"
                   ? " scale-x-[0.67] scale-y-[0.8]"
                   : "")
               }
@@ -120,7 +120,7 @@ const MovieCard = ({
             <p
               className={
                 "text-sm -ml-5" +
-                (cardType.toString() != "suggestions"
+                (cardType !== "suggestions"
                   ? " scale-x-[0.67] scale-y-[0.8]"
                   : "")
               }
