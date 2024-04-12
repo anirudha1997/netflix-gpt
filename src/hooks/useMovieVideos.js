@@ -18,7 +18,6 @@ const useMovieTrailer = (movieID) => {
     );
     const json = await data.json();
     const trailer = json.results.filter((video) => video.type === "Trailer");
-    console.log("hook executed");
     dispatch(addMovieVideos(trailer));
   };
 };

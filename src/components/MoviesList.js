@@ -33,7 +33,6 @@ const MoviesList = ({ title, moviesData, type }) => {
     );
     const json = await data.json();
     const trailer = json.results.filter((video) => video.type === "Trailer");
-    console.log("hook executed");
     dispatch(addMovieVideos(trailer[0]));
   };
 
@@ -97,6 +96,7 @@ const MoviesList = ({ title, moviesData, type }) => {
             onMouseLeave={handleMouseLeave}
             isHovered={hoveredCard === index}
             cardIndex={index}
+            cardType={type}
           />
         ))}
       </div>

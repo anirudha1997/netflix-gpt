@@ -12,6 +12,7 @@ const MovieCard = ({
   isHovered,
   genre_ids,
   cardIndex,
+  cardType,
 }) => {
   const genres = useSelector((store) => store.movies.genres);
   const trailer = useSelector((store) => store.movies.movieTrailer);
@@ -35,7 +36,7 @@ const MovieCard = ({
       `movieCard-${posterId}-${cardIndex}-${relatedTitle}`
     );
 
-    if (card) {
+    if (card && cardType != "suggestions") {
       card.addEventListener("mouseenter", onMouseEnter);
       card.addEventListener("mouseleave", onMouseLeave);
 
@@ -52,8 +53,11 @@ const MovieCard = ({
     <div
       id={`movieCard-${posterId}-${cardIndex}-${relatedTitle}`}
       className={
-        "min-w-[185px] mr-3 relative hover:scale-x-150 hover:scale-y-125 cursor-pointer " +
-        (cardIndex === 0 ? "origin-left" : "")
+        "min-w-[185px] mr-3 relative cursor-pointer " +
+        (cardIndex === 0 ? "origin-left" : "") +
+        (cardType != "suggestions"
+          ? " hover:scale-x-150 hover:scale-y-125"
+          : "")
       }
       style={{ zIndex: isHovered ? 1 : 0 }}
     >
@@ -82,17 +86,45 @@ const MovieCard = ({
         <div className="absolute bottom-5 left-0 w-full flex h-[45%]">
           <div className="bg-gray-900 opacity-95 text-white font-semibold w-full py-4">
             <div className="flex items-center justify-between">
-              <button className="ml-2 scale-x-[0.67] scale-y-[0.8]">
+              <button
+                className={
+                  "ml-2" +
+                  (cardType != "suggestions"
+                    ? " scale-x-[0.67] scale-y-[0.8]"
+                    : "")
+                }
+              >
                 <img src={play_button} alt="play" />
               </button>
-              <p className="scale-x-[0.67] scale-y-[0.8] mr-4 border border-gray-500 p-1 text-gray-500 font-semibold w-fit">
+              <p
+                className={
+                  "mr-4 border border-gray-500 p-1 text-gray-500 font-semibold w-fit" +
+                  (cardType != "suggestions"
+                    ? " scale-x-[0.67] scale-y-[0.8]"
+                    : "")
+                }
+              >
                 {adult ? "A" : "U/A"}
               </p>
             </div>
-            <p className="scale-x-[0.67] scale-y-[0.8] -ml-5 pb-0">
+            <p
+              className={
+                "-ml-5 pb-0" +
+                (cardType != "suggestions"
+                  ? " scale-x-[0.67] scale-y-[0.8]"
+                  : "")
+              }
+            >
               Rating: {rating.toFixed(1) !== "0.0" ? rating.toFixed(1) : "N/A"}
             </p>
-            <p className="scale-x-[0.67] scale-y-[0.8] text-sm -ml-5">
+            <p
+              className={
+                "text-sm -ml-5" +
+                (cardType != "suggestions"
+                  ? " scale-x-[0.67] scale-y-[0.8]"
+                  : "")
+              }
+            >
               {genreNames.join(" · ")}
             </p>
           </div>

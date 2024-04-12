@@ -14,7 +14,6 @@ const MainMovieVideo = ({ movieId }) => {
       TMDB_options
     );
     const json = await data.json();
-    console.log(json);
     const trailer = json.results.filter((video) => video.type === "Trailer");
     dispatch(updateMainMovieVideo(trailer));
   }, [dispatch, movieId]);
@@ -25,7 +24,6 @@ const MainMovieVideo = ({ movieId }) => {
 
   if (!trailer_video) return;
   const video_key = trailer_video[0].key;
-  console.log("Trailer video key:", video_key);
 
   return (
     <div className="absolute top-44 xl:top-0 z-0 pointer-events-none w-full">
