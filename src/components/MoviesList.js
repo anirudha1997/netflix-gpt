@@ -1,19 +1,14 @@
 import { useState, useRef } from "react";
 import MovieCard from "./MovieCard";
-import { TMDB_options } from "../utils/conatants";
-import { useDispatch } from "react-redux";
-import {
-  addMovieVideos,
-  clearMovieVideos,
-  setShowIframe,
-} from "../utils/moviesSlice";
+// ...existing code...
+// Removed unused imports and variables
 
 const MoviesList = ({ title, moviesData, type }) => {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
   const containerRef = useRef(null);
-  const dispatch = useDispatch();
+  // Removed unused dispatch variable
 
   const handleScroll = () => {
     if (containerRef.current) {

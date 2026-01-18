@@ -44,8 +44,7 @@ const Header = () => {
       dispatch(removeUser());
       navigate("/");
     }
-  }, [dispatch, navigate, currentUser]);
-
+  }, [dispatch, navigate, currentUser, location.pathname]);
   const signOutHandler = async () => {
     try {
       await currentUser.logout();
