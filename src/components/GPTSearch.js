@@ -4,20 +4,21 @@ import GPTSuggestions from "./GPTSuggestions";
 import { BG_IMG } from "./../utils/conatants";
 
 const GPTSearch = () => {
-  const conatinerBgImg = {
-    backgroundImage: "url( '" + BG_IMG + "')",
-  };
   return (
-    <div
-      className="relative bg-black bg-cover bg-center min-h-screen xl:min-h-hull"
-      style={conatinerBgImg}
-    >
+    <div className="relative min-h-screen bg-black">
+      {/* Background Image with Overlay */}
       <div
-        className="absolute top-0 w-full
-      flex justify-center items-center z-10 h-full bg-black/80"
-      ></div>
-      <GPTSearchBar />
-      <GPTSuggestions />
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url('${BG_IMG}')` }}
+      >
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10">
+        <GPTSearchBar />
+        <GPTSuggestions />
+      </div>
     </div>
   );
 };

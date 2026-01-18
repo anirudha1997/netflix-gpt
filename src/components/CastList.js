@@ -1,19 +1,9 @@
 import { useState, useRef } from "react";
-import MovieCard from "./MovieCard";
-import { TMDB_options } from "../utils/conatants";
-import { useDispatch } from "react-redux";
-import {
-  addMovieVideos,
-  clearMovieVideos,
-  setShowIframe,
-} from "../utils/moviesSlice";
 
-const MoviesList = ({ title, moviesData, type }) => {
-  const [hoveredCard, setHoveredCard] = useState(null);
+const CastList = ({ title, castData }) => {
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
   const containerRef = useRef(null);
-  const dispatch = useDispatch();
 
   const handleScroll = () => {
     if (containerRef.current) {
@@ -35,22 +25,14 @@ const MoviesList = ({ title, moviesData, type }) => {
     }
   };
 
-  const handleMouseEnter = (index) => {
-    setHoveredCard(index);
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredCard(null);
-  };
+  if (!castData || castData.length === 0) return null;
 
   return (
     <div className="relative group/list mb-8">
       {/* Title */}
-      {title && (
-        <h2 className="text-xl md:text-2xl font-bold text-white mb-4 px-4 md:px-0">
-          {title}
-        </h2>
-      )}
+      <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 px-4 md:px-0">
+        {title}
+      </h2>
 
       {/* Left Arrow */}
       {showLeftArrow && (
@@ -75,28 +57,53 @@ const MoviesList = ({ title, moviesData, type }) => {
         </button>
       )}
 
-      {/* Movies Container */}
+      {/* Cast Container */}
       <div
         className="flex gap-4 overflow-x-scroll overflow-y-visible scroll-smooth hide-scrollbar px-4 md:px-0"
         ref={containerRef}
         onScroll={handleScroll}
       >
-        {moviesData?.map((movie, index) => (
-          <div key={movie.id} className="w-[150px] md:w-[180px] flex-shrink-0">
-            <MovieCard
-              relatedTitle={title}
-              movieId={movie.id}
-              posterId={movie.poster_path}
-              adult={movie.adult}
-              title={movie.title}
-              rating={movie.vote_average}
-              genre_ids={movie.genre_ids}
-              onMouseEnter={() => handleMouseEnter(index)}
-              onMouseLeave={handleMouseLeave}
-              isHovered={hoveredCard === index}
-              cardIndex={index}
-              cardType={type}
-            />
+        {castData.map((actor) => (
+          <div
+            key={actor.id}
+            className="w-[140px] md:w-[160px] flex-shrink-0 group cursor-pointer"
+          >
+            <div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-gray-900 shadow-lg transform transition-all duration-300 group-hover:scale-105 group-hover:shadow-2xl mb-3">
+              {actor.profile_path ? (
+                <img
+                  src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
+                  alt={actor.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-600">
+                  <span className="text-5xl">👤</span>
+                </div>
+              )}
+
+              {/* Gradient overlay on hover */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+              {/* Info on hover */}
+              <div className="absolute bottom-0 left-0 right-0 p-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                <p className="text-white font-bold text-xs md:text-sm line-clamp-1">
+                  {actor.name}
+                </p>
+                <p className="text-gray-300 text-xs line-clamp-1 mt-1">
+                  {actor.character}
+                </p>
+              </div>
+            </div>
+
+            {/* Actor info below */}
+            <div>
+              <p className="font-semibold text-sm line-clamp-1 text-white">
+                {actor.name}
+              </p>
+              <p className="text-gray-400 text-xs line-clamp-1">
+                {actor.character}
+              </p>
+            </div>
           </div>
         ))}
       </div>
@@ -137,4 +144,4 @@ const MoviesList = ({ title, moviesData, type }) => {
   );
 };
 
-export default MoviesList;
+export default CastList;

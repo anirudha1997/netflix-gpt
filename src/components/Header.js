@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../utils/conatants";
 import { addUser, removeUser } from "./../utils/userSlice";
 import { NETFLIX_LOGO } from "./../utils/conatants";
@@ -12,14 +12,19 @@ import useGenres from "../hooks/useGenres";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const user = useSelector((store) => store.user);
   const gptSearchActive = useSelector(
-    (store) => store.gptSearch.toggleGPTSearch
+    (store) => store.gptSearch.toggleGPTSearch,
   );
 
   const currentUser = auth.currentUser();
   useGenres();
+
+  // Check if we're on the movie landing page
+  const isMoviePage = location.pathname.startsWith("/movie/");
+
   useEffect(() => {
     if (currentUser) {
       // User is logged in
@@ -28,9 +33,12 @@ const Header = () => {
         addUser({
           displayName: full_name.split(" ")[0],
           photoURL: avatar_url,
-        })
+        }),
       );
-      navigate("/browse");
+      // Only navigate to /browse if we're on the login page
+      if (location.pathname === "/") {
+        navigate("/browse");
+      }
     } else {
       // User is signed out
       dispatch(removeUser());
@@ -51,6 +59,20 @@ const Header = () => {
   const gptButtonHandler = () => {
     dispatch(toggleGPT());
     dispatch(resetSearchData());
+    if (!gptSearchActive) {
+      navigate("/browse");
+    } else {
+      navigate("/browse");
+    }
+  };
+
+  const homeButtonHandler = () => {
+    // If GPT search is active, toggle it off
+    if (gptSearchActive) {
+      dispatch(toggleGPT());
+      dispatch(resetSearchData());
+    }
+    navigate("/browse");
   };
 
   const langSelectHandler = (e) => {
@@ -58,19 +80,21 @@ const Header = () => {
   };
 
   return (
-    <div className="absolute z-30 w-full flex flex-col xl:flex-row items-center justify-between">
+    <div className="absolute z-30 w-full flex flex-col xl:flex-row items-center justify-between px-4 md:px-8 py-4">
       <img
         src={NETFLIX_LOGO}
         alt="netflix-logo"
-        className="w-6/12 md:w-1/4 xl:w-2/12"
+        className="w-32 md:w-40 cursor-pointer"
+        onClick={homeButtonHandler}
       />
       {user && (
-        <div className="flex items-center flex-col-reverse xl:flex-row">
-          <div className="flex items-center mt-4 xl:mt-0">
+        <div className="flex items-center flex-col-reverse xl:flex-row gap-4">
+          <div className="flex items-center gap-3">
+            {/* Show language selector only in GPT Search */}
             {gptSearchActive && (
               <div className="relative inline-block text-gray-700">
                 <select
-                  className="appearance-none px-4 py-2 bg-red-800 text-white font-semibold rounded-md pr-8 mr-4 outline-none cursor-pointer"
+                  className="appearance-none px-4 py-2 bg-red-700 hover:bg-red-800 text-white font-semibold rounded-md pr-8 outline-none cursor-pointer transition"
                   onChange={langSelectHandler}
                 >
                   {appLanguages.map((lang) => (
@@ -79,13 +103,12 @@ const Header = () => {
                     </option>
                   ))}
                 </select>
-                <div className="absolute inset-y-0 right-0 flex items-center pr-6 pointer-events-none">
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                   <svg
-                    className="w-5 h-5 text-white"
+                    className="w-4 h-4 text-white"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
                       strokeLinecap="round"
@@ -97,28 +120,40 @@ const Header = () => {
                 </div>
               </div>
             )}
-            <button
-              className="px-4 py-2 bg-red-800 text-white font-semibold rounded-md"
-              onClick={gptButtonHandler}
-            >
-              {gptSearchActive ? "Home" : "GPT Search"}
-            </button>
+
+            {/* Show Home button on movie pages, GPT Search button on browse page */}
+            {isMoviePage ? (
+              <button
+                className="px-4 py-2 bg-red-700 hover:bg-red-800 text-white font-semibold rounded-md transition"
+                onClick={homeButtonHandler}
+              >
+                🏠 Home
+              </button>
+            ) : (
+              <button
+                className="px-4 py-2 bg-red-700 hover:bg-red-800 text-white font-semibold rounded-md transition"
+                onClick={gptButtonHandler}
+              >
+                {gptSearchActive ? "🏠 Home" : "🔍 GPT Search"}
+              </button>
+            )}
           </div>
-          <div className="flex items-center">
-            <p className="text-xl font-semibold text-white mx-4 cursor-pointer">
+
+          <div className="flex items-center gap-3">
+            <p className="text-base md:text-lg font-semibold text-white">
               Hi, {user?.displayName}
             </p>
             <img
               src={user.photoURL}
               alt="profile-icon"
-              className="h-7 rounded-full"
+              className="h-8 w-8 rounded-full object-cover border-2 border-white/20"
             />
-            <p
-              className="text-xl font-semibold text-white mx-4 cursor-pointer"
+            <button
+              className="text-base md:text-lg font-semibold text-white hover:text-gray-300 transition"
               onClick={signOutHandler}
             >
               Sign Out
-            </p>
+            </button>
           </div>
         </div>
       )}

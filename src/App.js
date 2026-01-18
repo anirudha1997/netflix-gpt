@@ -1,25 +1,21 @@
 import "./App.css";
 import Login from "./components/Login";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Browse from "./components/Browse";
+import MovieLandingPage from "./components/MovieLandingPage";
 import { Provider } from "react-redux";
 import appStore from "./utils/store";
-
-const appRouter = createBrowserRouter([
-  {
-    path: "/",
-    element: <Login />,
-  },
-  {
-    path: "/browse",
-    element: <Browse />,
-  },
-]);
 
 const App = () => {
   return (
     <Provider store={appStore}>
-      <RouterProvider router={appRouter} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/browse" element={<Browse />} />
+          <Route path="/movie/:movieId" element={<MovieLandingPage />} />
+        </Routes>
+      </BrowserRouter>
     </Provider>
   );
 };

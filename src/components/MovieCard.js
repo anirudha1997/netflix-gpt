@@ -1,26 +1,27 @@
 import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
-import play_button from "../assets/images/play-button.png";
+import { useNavigate } from "react-router-dom";
 
 const MovieCard = ({
   posterId,
   relatedTitle,
   adult,
   rating,
+  title,
   onMouseEnter,
   onMouseLeave,
   isHovered,
   genre_ids,
   cardIndex,
   cardType,
+  movieId,
 }) => {
   const genres = useSelector((store) => store.movies.genres);
-  const trailer = useSelector((store) => store.movies.movieTrailer);
-  const show_video = useSelector((store) => store.movies.showIframe);
+  const navigate = useNavigate();
 
   const genreNames = useMemo(() => {
     const names = [];
-    if (genres) {
+    if (genres && genre_ids) {
       genre_ids.forEach((genre) => {
         genres.forEach((storedGenre) => {
           if (storedGenre && storedGenre.id === genre)
@@ -31,105 +32,68 @@ const MovieCard = ({
     return names;
   }, [genre_ids, genres]);
 
-  useEffect(() => {
-    const card = document.getElementById(
-      `movieCard-${posterId}-${cardIndex}-${relatedTitle}`
-    );
+  const handleCardClick = () => {
+    navigate(`/movie/${movieId}`);
+  };
 
-    if (card && cardType !== "suggestions") {
-      card.addEventListener("mouseenter", onMouseEnter);
-      card.addEventListener("mouseleave", onMouseLeave);
-
-      return () => {
-        card.removeEventListener("mouseenter", onMouseEnter);
-        card.removeEventListener("mouseleave", onMouseLeave);
-      };
-    }
-  }, [posterId, relatedTitle, cardIndex, onMouseEnter, onMouseLeave, cardType]);
-
-  const trailor_video_key = trailer?.key;
-
+  // Consistent card design for all types
   return (
     <div
-      id={`movieCard-${posterId}-${cardIndex}-${relatedTitle}`}
-      className={
-        "min-w-[185px] mr-3 relative cursor-pointer " +
-        (cardIndex === 0 ? "origin-left" : "") +
-        (cardType !== "suggestions"
-          ? " hover:scale-x-150 hover:scale-y-125"
-          : "")
-      }
-      style={{ zIndex: isHovered ? 1 : 0 }}
+      onClick={handleCardClick}
+      className="group cursor-pointer flex-shrink-0"
     >
-      {isHovered && (
-        <iframe
-          className={`w-full pointer-events-none h-[55%] ${
-            !show_video ? "hidden" : ""
-          }`}
-          src={
-            "https://www.youtube.com/embed/" +
-            trailor_video_key +
-            "/?autoplay=1&mute=1&playlist=" +
-            trailor_video_key +
-            "&loop=1&controls=0"
-          }
-          allow="autoplay;"
-          title="Video Player"
-        ></iframe>
-      )}
-      <img
-        src={"https://image.tmdb.org/t/p/w185" + posterId}
-        className={"w-full h-auto " + (show_video && isHovered ? "hidden" : "")}
-        alt="movie poster"
-      />
-      {isHovered && (
-        <div className="absolute bottom-5 left-0 w-full flex h-[45%]">
-          <div className="bg-gray-900 opacity-95 text-white font-semibold w-full py-4">
-            <div className="flex items-center justify-between">
-              <button
-                className={
-                  "ml-2" +
-                  (cardType !== "suggestions"
-                    ? " scale-x-[0.67] scale-y-[0.8]"
-                    : "")
-                }
-              >
-                <img src={play_button} alt="play" />
-              </button>
-              <p
-                className={
-                  "mr-4 border border-gray-500 p-1 text-gray-500 font-semibold w-fit" +
-                  (cardType !== "suggestions"
-                    ? " scale-x-[0.67] scale-y-[0.8]"
-                    : "")
-                }
-              >
-                {adult ? "A" : "U/A"}
-              </p>
-            </div>
-            <p
-              className={
-                "-ml-5 pb-0" +
-                (cardType !== "suggestions"
-                  ? " scale-x-[0.67] scale-y-[0.8]"
-                  : "")
-              }
-            >
-              Rating: {rating.toFixed(1) !== "0.0" ? rating.toFixed(1) : "N/A"}
+      <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-gray-900 shadow-lg transform transition-all duration-300 group-hover:scale-105 group-hover:shadow-2xl">
+        <img
+          src={`https://image.tmdb.org/t/p/w500${posterId}`}
+          alt={title}
+          className="w-full h-full object-cover"
+        />
+
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+        {/* Movie info on hover */}
+        <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+          <h3 className="text-white font-bold text-xs md:text-sm line-clamp-2 mb-2 leading-tight pr-2">
+            {title}
+          </h3>
+
+          <div className="flex items-center gap-2 text-xs md:text-sm mb-2">
+            <span className="text-green-400 font-semibold">
+              ⭐ {rating?.toFixed(1)}
+            </span>
+            {adult !== undefined && (
+              <>
+                <span className="text-gray-400">•</span>
+                <span className="px-1.5 py-0.5 border border-gray-500 text-gray-300 text-xs font-semibold">
+                  {adult ? "18+" : "PG-13"}
+                </span>
+              </>
+            )}
+          </div>
+
+          {/* Genres */}
+          {genreNames.length > 0 && (
+            <p className="text-gray-400 text-xs line-clamp-1">
+              {genreNames.slice(0, 2).join(" • ")}
             </p>
-            <p
-              className={
-                "text-sm -ml-5" +
-                (cardType !== "suggestions"
-                  ? " scale-x-[0.67] scale-y-[0.8]"
-                  : "")
-              }
-            >
-              {genreNames.join(" · ")}
-            </p>
+          )}
+        </div>
+
+        {/* Play button on hover */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="w-12 h-12 md:w-8 md:h-8 bg-white/90 rounded-full flex items-center justify-center">
+            <span className="text-black text-lg ml-1">▶</span>
           </div>
         </div>
-      )}
+      </div>
+
+      {/* Movie title below poster */}
+      <div className="mt-2">
+        <h3 className="text-white font-semibold text-sm line-clamp-2">
+          {title}
+        </h3>
+      </div>
     </div>
   );
 };
